@@ -72,11 +72,7 @@ async function fetchDataAndDisplay(song) {
                     </div>
                     
                 `;
-          songCard.addEventListener("click", () => {
-            // currentSongIndex = index;
-            loadSong(currentSongIndex);
-            playPause();
-          });
+
           Count++;
           // songCard.appendChild(downloadLinksDiv);
         }
@@ -136,3 +132,11 @@ async function fetchDataAndDisplay(song) {
 //     timeout = setTimeout(() => func.apply(context, args), delay);
 //   };
 // }
+function playSong(index) {
+  loadSongsFromLocalStorage();
+  currentSongIndex = index;
+  loadSong(currentSongIndex);
+  playPause();
+}
+// Load songs from localStorage and populate the song list.
+// songCard.addEventListener("click", () => {});

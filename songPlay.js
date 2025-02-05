@@ -112,6 +112,7 @@ volumeSlider.addEventListener("input", () => {
 
 // Load songs from localStorage and populate the song list.
 function loadSongsFromLocalStorage() {
+  songList.innerHTML = ""; // Clear the song list first.
   try {
     const songArrayString = localStorage.getItem("SongArray");
     if (songArrayString) {
