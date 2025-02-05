@@ -44,15 +44,7 @@ async function fetchDataAndDisplay(song) {
         const downloadUrls = songData?.downloadUrl ?? [];
         const url = {};
         if (downloadUrls.length > 0) {
-          // const downloadLinksDiv = document.createElement("div");
-          // downloadLinksDiv.classList.add("download-links");
-
           downloadUrls.forEach((download) => {
-            // const downloadLink = document.createElement("a");
-            // downloadLink.href = download.url;
-            // downloadLink.textContent = `${download.quality} Download`;
-            // downloadLink.target = "_blank";
-            // downloadLinksDiv.appendChild(downloadLink);
             url[download.quality] = download.url;
           });
 
@@ -74,7 +66,6 @@ async function fetchDataAndDisplay(song) {
                 `;
 
           Count++;
-          // songCard.appendChild(downloadLinksDiv);
         }
 
         const data = {
@@ -105,38 +96,12 @@ async function fetchDataAndDisplay(song) {
     console.error("Error fetching or processing data:", error);
   }
 }
-// Example usage (you'll need to set up the search input and event
-// Wait until DOM is fully loaded
-// document.addEventListener("DOMContentLoaded", function () {
-//   const searchInput = document.getElementById("search-input");
-//   if (searchInput) {
-//     searchInput.addEventListener(
-//       "input",
-//       debounce(function () {
-//         const searchTerm = searchInput.value;
-//         fetchDataAndDisplay(searchTerm);
-//       }, 100)
-//     );
-//   } else {
-//     console.error("Element with ID 'search-input' not found.");
-//   }
-// });
 
-// Debounce function (prevents rapid API calls)
-// function debounce(func, delay) {
-//   let timeout;
-//   return function () {
-//     const context = this;
-//     const args = arguments;
-//     clearTimeout(timeout);
-//     timeout = setTimeout(() => func.apply(context, args), delay);
-//   };
-// }
 function playSong(index) {
   loadSongsFromLocalStorage();
   currentSongIndex = index;
   loadSong(currentSongIndex);
   playPause();
+  playQueueSong(index);
 }
 // Load songs from localStorage and populate the song list.
-// songCard.addEventListener("click", () => {});

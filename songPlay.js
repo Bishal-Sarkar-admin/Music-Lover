@@ -114,14 +114,24 @@ volumeSlider.addEventListener("input", () => {
 function loadSongsFromLocalStorage() {
   songList.innerHTML = ""; // Clear the song list first.
   try {
-    const songArrayString = localStorage.getItem("SongArray");
-    if (songArrayString) {
-      songs = JSON.parse(songArrayString);
-      if (songs && songs.length > 0) {
-        songs.forEach((song, index) => {
-          const listItem = document.createElement("li");
-          listItem.classList.add("song-card");
-          listItem.innerHTML = `
+    const songArrayString = JSON.parse(localStorage.getItem("SongArray"));
+    cardCreate(songArrayString);
+  } catch (error) {
+    console.error("Error loading songs from localStorage:", error);
+    songTitle.textContent = "Error loading songs.";
+  }
+}
+
+function cardCreate(songArrayString) {
+  if (songArrayString) {
+    songs = songArrayString;
+    if (songs && songs.length > 0) {
+      songs.forEach((song, index) => {
+        const listItem = document.createElement("li");
+        listItem.classList.add("song-card");
+        listItem.addEventListener("click", () => playQueueSong(index));
+
+        listItem.innerHTML = `
             <h2>${song.title}</h2>
             <div class="details">
               <img class="song-image" width="250" height="350" src="${
@@ -139,32 +149,22 @@ function loadSongsFromLocalStorage() {
               song.url["320kbps"] || "#"
             }" target="_blank">Download Song</a>
           `;
-          listItem.addEventListener("click", () => {
-            currentSongIndex = index;
-            loadSong(currentSongIndex);
-            playPause();
-          });
-          songList.appendChild(listItem);
+        listItem.addEventListener("click", () => {
+          currentSongIndex = index;
+          loadSong(currentSongIndex);
+          playPause();
         });
-        loadSong(currentSongIndex); // Load the initial song.
-      } else {
-        console.error("No songs found or invalid data in localStorage.");
-        songTitle.textContent = "No songs available.";
-      }
+        songList.appendChild(listItem);
+      });
+      loadSong(currentSongIndex); // Load the initial song.
     } else {
-      console.error("No song data found in localStorage.");
+      console.error("No songs found or invalid data in localStorage.");
       songTitle.textContent = "No songs available.";
     }
-  } catch (error) {
-    console.error("Error loading songs from localStorage:", error);
-    songTitle.textContent = "Error loading songs.";
+  } else {
+    console.error("No song data found in localStorage.");
+    songTitle.textContent = "No songs available.";
   }
-}
-
-// Placeholder for playing a song from the queue (if implemented).
-function playQueueSong(songId) {
-  // You may implement custom logic for handling a queue.
-  console.log("Play song with ID:", songId);
 }
 
 loadSongsFromLocalStorage(); // Initialize songs from localStorage.
