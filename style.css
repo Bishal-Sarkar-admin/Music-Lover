@@ -23,12 +23,12 @@ body {
   flex-direction: column;
   padding-top: 120px;
 }
-h1 {
+.favourite-image {
   position: fixed;
   top: 0;
   left: 0;
   font-size: 20px;
-  /* background-color: #f0f0f0; */
+
   padding: 2px;
   border-radius: 2px;
 }
