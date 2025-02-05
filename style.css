@@ -91,7 +91,12 @@ body {
   font-size: 16px;
   margin-right: 10px;
 }
-
+/* For small devices like phones */
+@media (max-width: 768px) {
+  #song {
+    width: auto;
+  }
+}
 button {
   padding: 10px 20px;
   background-color: var(--primary-color);

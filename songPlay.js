@@ -59,17 +59,43 @@ function updateActiveSong() {
     }
   });
 }
+// Detect mobile user agents
+function userAgent() {
+  return /Mobi|Android/i.test(navigator.userAgent);
+}
 
-// Toggle play and pause.
 function playPause() {
+  const isMobile = userAgent();
   if (audioPlayer.paused) {
     audioPlayer.play();
-    playBtn.textContent = "⏸️ Play";
+    if (playBtn) {
+      playBtn.textContent = isMobile ? "⏸️" : "⏸️ Pause";
+    }
   } else {
     audioPlayer.pause();
-    playBtn.textContent = "▶️ Pause";
+    if (playBtn) {
+      playBtn.textContent = isMobile ? "▶️" : "▶️ Play";
+    }
   }
 }
+
+// Set button text based on the device type
+function buttonAgent() {
+  const isMobile = userAgent();
+
+  if (playBtn) {
+    playBtn.textContent = isMobile ? "▶️" : "▶️ Play";
+  }
+  if (prevBtn) {
+    prevBtn.textContent = isMobile ? "⏮️" : "⏮️ Previous";
+  }
+  if (nextBtn) {
+    nextBtn.textContent = isMobile ? "⏭️" : "⏭️ Next";
+  }
+}
+
+// Run on page load
+buttonAgent();
 
 playBtn.addEventListener("click", playPause);
 
