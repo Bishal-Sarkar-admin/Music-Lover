@@ -26,7 +26,7 @@ function loadSong(index) {
     navigator.mediaSession.metadata = new MediaMetadata({
       title: song.title,
       artist: song.artist,
-      album: song.album,
+      album: ` ${song.album}`,
       artwork: [
         {
           src: song.image,
@@ -37,24 +37,25 @@ function loadSong(index) {
     });
 
     // Define media controls
-
     navigator.mediaSession.setActionHandler("previoustrack", () => {
-      prevBtn.addEventListener("click", () => {
-        currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
-        loadSong(currentSongIndex);
-        playPause();
-      });
+      currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+      loadSong(currentSongIndex);
+      playPause(); // Play after changing song
     });
 
     navigator.mediaSession.setActionHandler("nexttrack", () => {
-      nextBtn.addEventListener("click", () => {
-        currentSongIndex = (currentSongIndex + 1) % songs.length;
-        loadSong(currentSongIndex);
-        playPause();
-      });
+      currentSongIndex = (currentSongIndex + 1) % songs.length;
+      loadSong(currentSongIndex);
+      playPause(); // Play after changing song
     });
   }
 
+  // Separate event listeners for buttons (NOT inside setActionHandler)
+  prevBtn.addEventListener("click", () => {
+    currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+    loadSong(currentSongIndex);
+    playPause();
+  });
   // Select an audio URL based on quality preference.
   const qualities = ["320kbps", "160kbps", "96kbps", "48kbps", "12kbps"];
   let selectedURL = null;
