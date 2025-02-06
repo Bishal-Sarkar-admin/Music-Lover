@@ -101,7 +101,7 @@ body {
 
 @keyframes marquee {
   from {
-    transform: translateX(0);
+    transform: translateX(100);
   }
   to {
     transform: translateX(-100%);
@@ -142,7 +142,7 @@ button:hover {
   background-color: #021bff23;
   border-radius: 5px;
   position: absolute;
-  top: -5px;
+  top: 2px;
   left: 0;
   z-index: 100;
   overflow: hidden;
@@ -154,7 +154,7 @@ button:hover {
   height: 5px;
   background-color: var(--primary-color);
   position: absolute;
-  top: -5px;
+  top: 2px;
   left: 0; /* This can be adjusted dynamically with JavaScript to animate the thumb */
   z-index: 90;
   transition: left 0.2s ease; /* Smooth transition for thumb movement */
@@ -170,9 +170,6 @@ button:hover {
 
 ul {
   display: flex;
-  justify-content: center;
-  justify-content: center;
-  flex-direction: row;
   flex-wrap: wrap;
   list-style-type: none; /* Removes default list bullet points */
   padding: 0;
@@ -185,6 +182,7 @@ ul li {
   padding: 10px; /* Padding inside list items */
   border-radius: 5px; /* Rounded corners for list items */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for a 3D effect */
+
   display: flex;
   flex-direction: column;
   align-items: center;
