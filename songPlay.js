@@ -22,32 +22,6 @@ function loadSong(index) {
   songImage.src = song.image || "default-image.jpg"; // Ensure a fallback image
   songTitle.innerHTML = `<span class="song-title-text">${song.title} - ${song.artist} - ${song.album} - ${song.language} - ${song.year} </span>`;
 
-  // Set media session metadata only if the song has an image
-  if ("mediaSession" in navigator && song.image) {
-    navigator.mediaSession.metadata = new MediaMetadata({
-      title: song.title,
-      artist: song.artist,
-      album: song.album,
-      artwork: [{ src: song.image, sizes: "512x512", type: "image/jpg" }],
-    });
-    // Function to update progress in notification
-    function updateMediaSessionPosition() {
-      if ("setPositionState" in navigator.mediaSession) {
-        navigator.mediaSession.setPositionState({
-          duration: audioPlayer.duration || 0, // Total song duration
-          position: audioPlayer.currentTime || 0, // Current progress
-          playbackRate: audioPlayer.playbackRate || 1, // Speed (usually 1)
-        });
-      }
-    }
-
-    // Update position every second
-    audioPlayer.addEventListener("timeupdate", updateMediaSessionPosition);
-    // Define media controls
-    navigator.mediaSession.setActionHandler("previoustrack", prevTrack);
-    navigator.mediaSession.setActionHandler("nexttrack", nextTrack);
-  }
-
   // Select an audio URL based on quality preference.
   const qualities = ["320kbps", "160kbps", "96kbps", "48kbps", "12kbps"];
   let selectedURL = null;
@@ -61,23 +35,70 @@ function loadSong(index) {
 
   if (selectedURL) {
     audioPlayer.src = selectedURL;
-
-    // ✅ Play audio ONLY if the user has interacted
-    audioPlayer.onloadedmetadata = () => {
-      updateProgress();
-      if (document.userInteraction) {
-        audioPlayer
-          .play()
-          .catch((error) => console.error("Playback error:", error));
-      }
-    };
   } else {
     console.error("No suitable audio URL found for this song.");
     songTitle.textContent = "Audio not available.";
+    return;
   }
+
+  // ✅ Ensure media session metadata updates correctly
+  if ("mediaSession" in navigator) {
+    updateMediaSessionMetadata(song);
+  }
+
+  // ✅ Update progress bar & ensure playback starts only after user interaction
+  audioPlayer.onloadedmetadata = () => {
+    updateProgress();
+    if (document.userInteraction) {
+      audioPlayer
+        .play()
+        .catch((error) => console.error("Playback error:", error));
+    }
+  };
 
   updateActiveSong();
 }
+
+// ✅ Function to update Media Session metadata
+function updateMediaSessionMetadata(song) {
+  if (!song.image) return; // Avoid errors with missing images
+
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title: song.title,
+    artist: song.artist,
+    album: song.album,
+    artwork: [{ src: song.image, sizes: "512x512", type: "image/jpg" }],
+  });
+
+  // ✅ Ensure media session controls work
+  navigator.mediaSession.setActionHandler("previoustrack", prevTrack);
+  navigator.mediaSession.setActionHandler("nexttrack", nextTrack);
+
+  // ✅ Update media session progress
+  updateMediaSessionPosition();
+}
+
+// ✅ Function to update Media Session progress bar
+function updateMediaSessionPosition() {
+  if (
+    "setPositionState" in navigator.mediaSession &&
+    !isNaN(audioPlayer.duration)
+  ) {
+    navigator.mediaSession.setPositionState({
+      duration: audioPlayer.duration, // Total duration
+      position: audioPlayer.currentTime, // Current progress
+      playbackRate: audioPlayer.playbackRate || 1, // Speed (usually 1)
+    });
+  }
+}
+
+// ✅ Ensure media session position updates every second
+audioPlayer.addEventListener("timeupdate", updateMediaSessionPosition);
+
+// ✅ Ensure user interaction allows playback
+document.addEventListener("click", () => {
+  document.userInteraction = true;
+});
 
 // ✅ Function to handle user interaction
 document.addEventListener("click", () => {
