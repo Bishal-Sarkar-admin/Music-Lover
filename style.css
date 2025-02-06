@@ -59,6 +59,7 @@ body {
   background-color: var(--background);
   color: #f6f6f6;
   border-radius: 8px;
+  padding-bottom: 1.2rem;
 }
 
 .song-image {
@@ -78,11 +79,35 @@ body {
   border: 2px solid var(--secondary-color);
 }
 #song-title {
+  display: flex;
+  z-index: 5;
+  width: 100%;
+  position: absolute;
   text-align: center;
   color: var(--text-color);
+  bottom: 2px;
+  left: 5vw;
+  white-space: nowrap; /* Prevents text from wrapping */
+  overflow: hidden;
 }
-.controls {
+
+#song-title span {
+  display: inline-block;
+  font-size: medium;
+  font-weight: bold;
+  padding-left: 100%; /* Start off-screen */
+  animation: marquee 25s linear infinite;
 }
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
 #song {
   width: 300px;
   padding: 10px;
