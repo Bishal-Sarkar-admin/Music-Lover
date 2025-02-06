@@ -19,43 +19,23 @@ function loadSong(index) {
   }
 
   const song = songs[index];
-  songImage.src = song.image;
+  songImage.src = song.image || "default-image.jpg"; // Ensure a fallback image
   songTitle.innerHTML = `<span class="song-title-text">${song.title} - ${song.artist} - ${song.album} - ${song.language} - ${song.year} </span>`;
-  // Set media session metadata
-  if ("mediaSession" in navigator) {
+
+  // Set media session metadata only if the song has an image
+  if ("mediaSession" in navigator && song.image) {
     navigator.mediaSession.metadata = new MediaMetadata({
       title: song.title,
       artist: song.artist,
-      album: ` ${song.album}`,
-      artwork: [
-        {
-          src: song.image,
-          sizes: "512x512",
-          type: "image/jpg",
-        },
-      ],
+      album: song.album,
+      artwork: [{ src: song.image, sizes: "512x512", type: "image/jpg" }],
     });
 
     // Define media controls
-    navigator.mediaSession.setActionHandler("previoustrack", () => {
-      currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
-      loadSong(currentSongIndex);
-      playPause(); // Play after changing song
-    });
-
-    navigator.mediaSession.setActionHandler("nexttrack", () => {
-      currentSongIndex = (currentSongIndex + 1) % songs.length;
-      loadSong(currentSongIndex);
-      playPause(); // Play after changing song
-    });
+    navigator.mediaSession.setActionHandler("previoustrack", prevTrack);
+    navigator.mediaSession.setActionHandler("nexttrack", nextTrack);
   }
 
-  // Separate event listeners for buttons (NOT inside setActionHandler)
-  prevBtn.addEventListener("click", () => {
-    currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
-    loadSong(currentSongIndex);
-    playPause();
-  });
   // Select an audio URL based on quality preference.
   const qualities = ["320kbps", "160kbps", "96kbps", "48kbps", "12kbps"];
   let selectedURL = null;
@@ -69,18 +49,44 @@ function loadSong(index) {
 
   if (selectedURL) {
     audioPlayer.src = selectedURL;
+
+    // ✅ Play audio ONLY if the user has interacted
+    audioPlayer.onloadedmetadata = () => {
+      updateProgress();
+      if (document.userInteraction) {
+        audioPlayer
+          .play()
+          .catch((error) => console.error("Playback error:", error));
+      }
+    };
   } else {
     console.error("No suitable audio URL found for this song.");
     songTitle.textContent = "Audio not available.";
-    return;
   }
-
-  audioPlayer.onloadedmetadata = () => {
-    updateProgress();
-  };
 
   updateActiveSong();
 }
+
+// ✅ Function to handle user interaction
+document.addEventListener("click", () => {
+  document.userInteraction = true; // Set user interaction flag
+});
+
+// Function to handle previous track
+function prevTrack() {
+  currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+  loadSong(currentSongIndex);
+}
+
+// Function to handle next track
+function nextTrack() {
+  currentSongIndex = (currentSongIndex + 1) % songs.length;
+  loadSong(currentSongIndex);
+}
+
+// Add event listeners **ONCE** (not inside `loadSong()`)
+prevBtn.addEventListener("click", prevTrack);
+nextBtn.addEventListener("click", nextTrack);
 
 // Update the active song in the song list visually.
 function updateActiveSong() {
@@ -230,62 +236,3 @@ function cardCreate(songArrayString) {
 loadSongsFromLocalStorage(); // Initialize songs from localStorage.
 
 ////
-if ("mediaSession" in navigator) {
-  navigator.mediaSession.metadata = new MediaMetadata({
-    title: song.title,
-    artist: song.artist,
-    album: song.album,
-    artwork: [
-      {
-        src: song.image,
-        sizes: "512x512",
-        type: "image/jpg",
-      },
-    ],
-  });
-
-  // Play/Pause Action
-  navigator.mediaSession.setActionHandler("play", () => {
-    playAudio();
-    navigator.mediaSession.playbackState = "playing";
-  });
-
-  navigator.mediaSession.setActionHandler("pause", () => {
-    pauseAudio();
-    navigator.mediaSession.playbackState = "paused";
-  });
-
-  // Next Track
-  navigator.mediaSession.setActionHandler("nexttrack", () => {
-    playNextTrack();
-  });
-
-  // Previous Track
-  navigator.mediaSession.setActionHandler("previoustrack", () => {
-    playPreviousTrack();
-  });
-}
-
-// Function to play audio
-function playAudio() {
-  let audio = document.querySelector("audio");
-  if (audio) audio.play();
-}
-
-// Function to pause audio
-function pauseAudio() {
-  let audio = document.querySelector("audio");
-  if (audio) audio.pause();
-}
-
-// Function to play next track (update this according to your logic)
-function playNextTrack() {
-  console.log("Next track clicked");
-  // Implement logic to change track
-}
-
-// Function to play previous track (update this according to your logic)
-function playPreviousTrack() {
-  console.log("Previous track clicked");
-  // Implement logic to change track
-}
