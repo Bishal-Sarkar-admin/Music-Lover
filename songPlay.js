@@ -30,7 +30,19 @@ function loadSong(index) {
       album: song.album,
       artwork: [{ src: song.image, sizes: "512x512", type: "image/jpg" }],
     });
+    // Function to update progress in notification
+    function updateMediaSessionPosition() {
+      if ("setPositionState" in navigator.mediaSession) {
+        navigator.mediaSession.setPositionState({
+          duration: audioPlayer.duration || 0, // Total song duration
+          position: audioPlayer.currentTime || 0, // Current progress
+          playbackRate: audioPlayer.playbackRate || 1, // Speed (usually 1)
+        });
+      }
+    }
 
+    // Update position every second
+    audioPlayer.addEventListener("timeupdate", updateMediaSessionPosition);
     // Define media controls
     navigator.mediaSession.setActionHandler("previoustrack", prevTrack);
     navigator.mediaSession.setActionHandler("nexttrack", nextTrack);
