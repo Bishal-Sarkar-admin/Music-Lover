@@ -67,7 +67,7 @@ body {
   height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  margin: 1rem 0;
+
   border: 5px solid var(--secondary-color);
 }
 #song-image {
@@ -270,12 +270,12 @@ footer {
 } */
 
 .song-card .details {
-  padding: 15px;
+  padding-top: 2px;
   color: #555;
 }
 
 .song-card .details p {
-  margin: 10px 0;
+  margin: 6px 0;
   line-height: 1.4;
 }
 

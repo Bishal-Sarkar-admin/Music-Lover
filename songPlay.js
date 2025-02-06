@@ -11,7 +11,7 @@ const songList = document.getElementById("song-list");
 
 let songs = [];
 let currentSongIndex = 0;
-
+let trackSongIndex = 0;
 // Function to load a song based on its index.
 function loadSong(index) {
   if (index < 0 || index >= songs.length) {
@@ -95,11 +95,6 @@ function updateMediaSessionPosition() {
 // ✅ Ensure media session position updates every second
 audioPlayer.addEventListener("timeupdate", updateMediaSessionPosition);
 
-// ✅ Ensure user interaction allows playback
-document.addEventListener("click", () => {
-  document.userInteraction = true;
-});
-
 // ✅ Function to handle user interaction
 document.addEventListener("click", () => {
   document.userInteraction = true; // Set user interaction flag
@@ -107,14 +102,14 @@ document.addEventListener("click", () => {
 
 // Function to handle previous track
 function prevTrack() {
-  currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
-  loadSong(currentSongIndex);
+  trackSongIndex = (trackSongIndex - 1 + songs.length) % songs.length;
+  loadSong(trackSongIndex);
 }
 
 // Function to handle next track
 function nextTrack() {
-  currentSongIndex = (currentSongIndex + 1) % songs.length;
-  loadSong(currentSongIndex);
+  trackSongIndex = (trackSongIndex + 1) % songs.length;
+  loadSong(trackSongIndex);
 }
 
 // Add event listeners **ONCE** (not inside `loadSong()`)
@@ -150,6 +145,7 @@ function playPause() {
       playBtn.textContent = isMobile ? "▶️" : "▶️ Play";
     }
   }
+  trackSongIndex = currentSongIndex;
 }
 
 // Set button text based on the device type
@@ -179,6 +175,12 @@ prevBtn.addEventListener("click", () => {
 });
 
 nextBtn.addEventListener("click", () => {
+  currentSongIndex = (currentSongIndex + 1) % songs.length;
+  loadSong(currentSongIndex);
+  playPause();
+});
+// Automatically play the next song when the current one ends
+audioPlayer.addEventListener("ended", () => {
   currentSongIndex = (currentSongIndex + 1) % songs.length;
   loadSong(currentSongIndex);
   playPause();
@@ -244,10 +246,11 @@ function cardCreate(songArrayString) {
               <p><strong>Year:</strong> ${song.year}</p>
               <p><strong>Play Count:</strong> ${song.playCount}</p>
             </div>
-            <a href="${
+            <a id="downloadLink" href="${
               song.url["320kbps"] || "#"
             }" target="_blank">Download Song</a>
           `;
+
         listItem.addEventListener("click", () => {
           currentSongIndex = index;
           loadSong(currentSongIndex);
