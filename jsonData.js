@@ -10,7 +10,7 @@ async function fetchDataAndDisplay(song) {
 
   try {
     const response = await fetch(
-      `https://jiosaavn-3o0zxoj68-sumit-kolhes-projects-94a4846a.vercel.app/api/search/songs?query=${song}`
+      `https://musiclover-nu.vercel.app/api/search/songs?query=${song}`
     );
 
     if (!response.ok) {
@@ -52,7 +52,6 @@ async function fetchDataAndDisplay(song) {
                     <h2>${songName}</h2>
                     <div class="details">
                     <img class="song-image" width="250" height="350" src="${imageURL}" alt="${songName} Album Art">
-                   
                     </div>
                     <div onClick="playSong(${Count})" class="details">
                         <p><strong>Artist:</strong> ${primaryArtistName}</p>
