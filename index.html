@@ -25,6 +25,9 @@
       <li id="ai" class="image">
         <img onclick="displayAI()" src="recomendation1.png" alt="AI Songs Suggestions" height="20" width="20" style="transform: scale(1.8); border-radius: 2.5px;">
       </li>
+      <li id="search" class="image">
+        <img  onclick="fetchSmartSearch()"src="deep-learning.png"  style=" transform: scale(1.6)"  alt="search" height="20" width="20">
+      </li>
     </ul>
   </header>
 
@@ -33,7 +36,7 @@
   
       <input type="text" id="song" placeholder="Enter song name..." />
       <button
-        onclick="fetchDataAndDisplay(document.getElementById('song').value)"
+        onclick="fetchDataAndDisplay()"
       >
         Search
       </button>
@@ -73,6 +76,7 @@
       </div>
 
       <section class="song-list">
+        <div id="smart-Server-health"></div>
       <ul id="song-list">
     
       </ul>
@@ -112,5 +116,6 @@
     <script src="songPlay.js"></script>
     <script src="queue.js"></script>
    <script src="ai.js"></script>
+   <script src="smartSearch.js"></script>
   </body>
 </html>

@@ -1,13 +1,17 @@
-async function fetchDataAndDisplay(song) {
+const smartServerhealth = document.getElementById("smart-Server-health");
+async function fetchDataAndDisplay() {
   const songList = document.getElementById("song-list");
   const loadingMessage = document.getElementById("loading");
   const errorMessage = document.getElementById("error-message");
   const placeholderImage = "placeholder.png"; // Path to your placeholder image
-
+  const song = document.getElementById("song").value;
   songList.innerHTML = ""; // Clear previous results
   loadingMessage.style.display = "block";
   errorMessage.textContent = "";
-
+  smartServerhealth.innerHTML = "";
+  setTimeout(() => {
+    smartServerhealth.innerHTML = "Starting Normal Search...";
+  }, 10);
   try {
     const response = await fetch(
       `https://musiclover-nu.vercel.app/api/search/songs?query=${song}`
@@ -18,6 +22,9 @@ async function fetchDataAndDisplay(song) {
       throw new Error(
         `HTTP error! status: ${response.status}, details: ${errorText}`
       );
+      smartServerhealth.innerHTML = "Normal Search Failed";
+    } else {
+      smartServerhealth.innerHTML = "Normal Search Completed";
     }
 
     const jsonData = await response.json();
@@ -94,6 +101,9 @@ async function fetchDataAndDisplay(song) {
       "Error fetching or processing data: " + error.message;
     console.error("Error fetching or processing data:", error);
   }
+  setTimeout(() => {
+    smartServerhealth.innerHTML = "";
+  }, 3000);
 }
 
 function playSong(index) {

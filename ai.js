@@ -35,16 +35,16 @@ function songArrayforAI() {
   }));
   return filteredSongs;
 }
-const api = `q&)y$#u%x"W5!e}g-DLc:j[K@Cnz7hRA'*ZQP=tp`;
+
 async function fetchAI() {
   try {
     const response = await fetch(
-      "https://ai-recommendation-gold.vercel.app/filter-songs",
+      "https://smart-search-psi.vercel.app/filter-songs",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": api,
+          "x-api-key": `Np2LexNKi2460PSmE3jjssd`,
         },
         body: JSON.stringify({ songs: songArrayforAI() }),
       }

@@ -226,6 +226,7 @@ audioPlayer.addEventListener("ended", nextTrack);
 function loadSongsFromLocalStorage() {
   try {
     const songArrayStr = localStorage.getItem("SongArray");
+
     if (songArrayStr) {
       const parsedSongs = JSON.parse(songArrayStr);
       if (Array.isArray(parsedSongs) && parsedSongs.length > 0) {
@@ -236,11 +237,26 @@ function loadSongsFromLocalStorage() {
         throw new Error("No valid songs found.");
       }
     } else {
-      throw new Error("SongArray not found in localStorage.");
+      const data = {
+        id: 1,
+        title: "Badshah O Badshah",
+        artist: "Anu Malik",
+        album: "Baadshah",
+        image: "Badshah O Badshah.jpg",
+        year: "1999",
+        language: "hindi",
+        playCount: "12924854",
+        url: {
+          "320kbps": "Baadshah O Baadshah.m4a",
+        }, // Populate URLS if needed
+      };
+      songs.push(data);
+      createSongCards(songs);
+      loadSong(currentSongIndex);
     }
   } catch (error) {
     console.error("Error loading songs from localStorage:", error);
-    songTitle.textContent = "Error loading songs.";
+    // songTitle.textContent = "Error loading songs.";
   }
 }
 

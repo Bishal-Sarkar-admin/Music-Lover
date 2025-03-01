@@ -175,7 +175,9 @@ button:hover {
   background-color: blue;
   color: blue;
 }
-
+#smart-Server-health {
+  text-align: center;
+}
 ul {
   display: flex;
   flex-wrap: wrap;
