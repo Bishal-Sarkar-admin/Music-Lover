@@ -7,7 +7,7 @@
      <link rel="icon" type="image/x-icon" href="music.png">
     <link rel="stylesheet" href="style.css" />
      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-      
+       <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
   </head>
   <body>
  <!-- Navigation Bar -->
@@ -114,13 +114,13 @@
   </div>
 </footer>
     <script>
-      const socket = io("https://activeusers.onrender.com"); // Connect to server
+      const socket = io("http://localhost:3000"); // Connect to server
 
       socket.on("activeUsers", (count) => {
         document.getElementById("activeUsers").innerText = count;
       });
     </script>
-    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+   
     <script src="jsonData.js"></script>
     <script src="songPlay.js"></script>
     <script src="queue.js"></script>
