@@ -23,6 +23,15 @@ body {
   flex-direction: column;
   padding-top: 120px;
 }
+#Active {
+  position: fixed;
+  top: 2px;
+  right: 2px;
+  background-color: var(--text-color);
+  padding: 5px;
+  border-radius: 4px;
+  color: var(--background);
+}
 .nav-bar {
   position: fixed;
   top: 10px;
