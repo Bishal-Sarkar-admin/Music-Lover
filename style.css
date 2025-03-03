@@ -25,13 +25,37 @@ body {
 }
 #Active {
   position: fixed;
-  top: 2px;
-  right: 2px;
+  top: 10px;
+  right: 10px;
   background-color: var(--text-color);
-  padding: 5px;
-  border-radius: 4px;
+  padding: 8px 12px;
+  border-radius: 6px;
   color: var(--background);
+  font-weight: bold;
+  font-size: 14px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.3s ease-in-out;
 }
+
+/* Make the font and padding smaller for mobile screens */
+@media (max-width: 600px) {
+  #Active {
+    top: 5px;
+    right: 5px;
+    padding: 6px 10px;
+    font-size: 12px;
+    border-radius: 4px;
+  }
+
+  #Active span {
+    font-size: 14px;
+  }
+}
+
 .nav-bar {
   position: fixed;
   top: 10px;
