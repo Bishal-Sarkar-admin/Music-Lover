@@ -114,7 +114,7 @@
   </div>
 </footer>
     <script>
-      const socket = io("http://localhost:3000"); // Connect to server
+      const socket = io("https://activeusers.onrender.com"); // Connect to server
 
       socket.on("activeUsers", (count) => {
         document.getElementById("activeUsers").innerText = count;
