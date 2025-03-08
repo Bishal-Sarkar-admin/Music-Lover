@@ -48,6 +48,7 @@ async function fetchSmartSearch() {
       throw new Error(
         `HTTP error! Status: ${response.status}, Message: ${errorText}`
       );
+      smartServerhealth.innerHTML = `Smart Search Failed - ${errorText}`;
     } else {
       smartServerhealth.innerHTML = "Smart Search Completed";
     }
@@ -57,6 +58,7 @@ async function fetchSmartSearch() {
     if (!data || !Array.isArray(data.suggestedSongs)) {
       console.warn("No 'suggestedSongs' data received from API.");
       return ["error", "No suggested songs data received"];
+      smartServerhealth.innerHTML = "No suggested songs received";
     }
 
     const SongArray2 = data.suggestedSongs.map((element) => ({
@@ -84,6 +86,9 @@ async function fetchSmartSearch() {
     }, 4000);
   } catch (error) {
     console.error("Fetch error:", error.message);
-    smartServerhealth.innerHTML = "Smart Search Failed";
+    smartServerhealth.innerHTML = `Smart Search Failed - ${error.message}`;
+    setTimeout(() => {
+      smartServerhealth.innerHTML = "";
+    }, 3000);
   }
 }
