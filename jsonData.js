@@ -14,7 +14,7 @@ async function fetchDataAndDisplay() {
   }, 10);
   try {
     const response = await fetch(
-      `https://musiclover-nu.vercel.app/api/search/songs?query=${song}`
+      `https://musiclovercom.vercel.app/api/search/songs?query=${song}`
     );
 
     if (!response.ok) {
