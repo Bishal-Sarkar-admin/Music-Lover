@@ -1,309 +1,61 @@
+/* === Variables === */
 :root {
-  --primary-color: #2a2a72;
-  --secondary-color: #009ffd;
-  --background: #f6f6f6;
+  --primary-color: #2a2a72; /* Deep Blue */
+  --secondary-color: #009ffd; /* Bright Blue */
+  --accent-color: #ff6b6b;
+  --background: #f7f8fc; /* Main background */
+  --card-background: #ffffff; /* Card background */
   --text-color: #232528;
+  --text-secondary: #555;
+  --text-light: #ffffff;
+  --border-color: #e0e0e0; /* Lighter border */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.06); /* Softer shadow */
+  --shadow-md: 0 5px 12px rgba(0, 0, 0, 0.1);
+  --border-radius: 8px; /* Consistent radius */
+  --font-main: "Roboto", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+  /* --- Layout Dimensions --- */
+  /* Adjust these based on final testing */
+  --nav-width-desktop: 60px;
+  --nav-gap-desktop: 15px; /* Space next to nav */
+  --search-height: 65px;
+  --player-height: 80px; /* Slightly shorter */
 }
 
+/* === Reset & Base === */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+  font-size: 16px; /* Base font size */
+}
+
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: var(--font-main);
   line-height: 1.6;
-
   background-color: var(--background);
   color: var(--text-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding-top: 120px;
-}
-#Active {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  background-color: var(--text-color);
-  padding: 8px 12px;
-  border-radius: 6px;
-  color: var(--background);
-  font-weight: bold;
-  font-size: 14px;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  transition: all 0.3s ease-in-out;
+  padding-top: var(--search-height);
+  padding-bottom: var(--player-height);
+  padding-left: 0; /* Default no padding */
+  min-height: 100vh;
+  overflow-x: hidden; /* Prevent accidental horizontal scroll */
 }
 
-/* Make the font and padding smaller for mobile screens */
-@media (max-width: 600px) {
-  #Active {
-    top: 5px;
-    right: 5px;
-    padding: 6px 10px;
-    font-size: 12px;
-    border-radius: 4px;
-  }
-
-  #Active span {
-    font-size: 14px;
-  }
-}
-
-.nav-bar {
-  position: fixed;
-  top: 10px;
-  left: 2px;
-  font-size: 20px;
-  padding: 2px;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--primary-color);
-}
-@media (max-width: 768px) {
-  .nav-bar {
-    top: 80px;
-  }
-}
-.search-container {
-  position: fixed;
-  top: 1px;
-
-  display: flex;
-
-  gap: 10px;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 10px 20px;
-  border-radius: 30px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-}
-.player-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-
-  position: fixed;
-  bottom: 0;
-  width: 100vw;
-  background-color: var(--background);
-  color: #f6f6f6;
-  border-radius: 8px;
-  padding-bottom: 1.2rem;
-}
-
-.song-image {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-
-  border: 5px solid var(--secondary-color);
-}
-#song-image {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin: 0.8rem 0 0 0.6rem;
-  border: 2px solid var(--secondary-color);
-}
-
-#song-title {
-  display: flex;
-  z-index: -1;
-  width: 100%;
-  position: absolute;
-  text-align: center;
-  color: var(--text-color);
-  bottom: 2px;
-  left: 5vw;
-  white-space: nowrap; /* Prevents text from wrapping */
-  overflow: hidden;
-}
-
-#song-title span {
-  display: inline-block;
-  font-size: medium;
-  font-weight: bold;
-  padding-left: 100%; /* Start off-screen */
-  animation: marquee 25s linear infinite;
-}
-
-@keyframes marquee {
-  from {
-    transform: translateX(100);
-  }
-  to {
-    transform: translateX(-100%);
-  }
-}
-
-#song {
-  width: 300px;
-  padding: 10px;
-  border: 2px solid var(--primary-color);
-  border-radius: 25px;
-  font-size: 16px;
-  margin-right: 10px;
-}
-/* For small devices like phones */
-@media (max-width: 768px) {
-  #song {
-    width: auto;
-  }
-}
-button {
-  padding: 10px 20px;
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-button:hover {
-  background-color: var(--secondary-color);
-}
-
-#progress-bar {
-  width: 100%;
-  height: 5px;
-  background-color: #021bff23;
-  border-radius: 5px;
-  position: absolute;
-  top: 5px;
-  left: 0;
-  z-index: 100;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-#progress-thumb {
-  width: 10px;
-  height: 5px;
-  background-color: var(--primary-color);
-  position: absolute;
-  top: 5px;
-  left: 0; /* This can be adjusted dynamically with JavaScript to animate the thumb */
-  z-index: 90;
-  transition: left 0.2s ease; /* Smooth transition for thumb movement */
-  border-radius: 0vw 50vw 50vw 0vw;
-}
-
-#volume-slider {
-  width: 20%;
-  margin-top: 10px;
-  background-color: blue;
-  color: blue;
-}
-#smart-Server-health {
-  text-align: center;
-}
-ul {
-  display: flex;
-  flex-wrap: wrap;
-  list-style-type: none; /* Removes default list bullet points */
-  padding: 0;
-  margin: 0;
-}
-
-ul li {
-  background-color: #f0f0f0; /* Background color for list items */
-  margin: 5px; /* Space between list items */
-  padding: 10px; /* Padding inside list items */
-  border-radius: 5px; /* Rounded corners for list items */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for a 3D effect */
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-ul li:hover {
-  background-color: #e0e0e0; /* Background color when hovering over list items */
-}
-
-ul li:first-child {
-  font-weight: bold; /* Bold font for the first list item */
-}
-a {
-  color: var(--primary-color);
-  text-decoration: none;
-  border-bottom: 2px solid transparent;
-  transition: all 0.3s ease;
-  padding: 2px 4px;
-  font-weight: 500;
-}
-
-a:hover {
-  color: var(--secondary-color);
-  border-bottom: 2px solid var(--secondary-color);
-  transform: translateY(-1px);
-}
-
-a:active {
-  transform: translateY(0);
-}
-
-a:focus {
-  outline: 2px solid var(--secondary-color);
-  outline-offset: 2px;
-  border-radius: 2px;
-}
-
-a.visited {
-  color: #6c5ce7;
-}
-
-/* If you have links in your song list */
-.song-item a {
-  color: inherit;
-  border-bottom: none;
-}
-
-.song-item a:hover {
-  color: white;
-  border-bottom: 2px solid white;
-}
-
-/* //// */
-footer {
-  padding: 200px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.footer-content p {
-  text-align: center;
-  font-size: 1.2em;
-  color: #333;
-}
-.favorites-list h2 {
-  text-align: center;
-}
-.song-card {
-  width: 300px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  font-family: "Arial", sans-serif;
-  margin: 20px auto;
-  padding: 10px;
+/* === Content Sections Wrapper === */
+/* Wrap your <section class="song-list"> etc. in a <main> tag if possible */
+/* Or apply styles directly to the sections */
+main, /* If using a main tag */
+.song-list, /* Apply directly if no main tag */
+.favorites-list,
+#suggestionsList {
+  padding: 25px; /* Uniform padding */
+  width: 100%; /* Full width by default */
+  /* Desktop margin set via media query */
 }
 
 .song-card h2 {
@@ -315,48 +67,721 @@ footer {
   text-align: center;
   border-radius: 4px;
 }
-
-.song-card .details {
-  padding-top: 2px;
-  color: #555;
-}
-
-.song-card .details p {
-  margin: 6px 0;
-  line-height: 1.4;
-}
-
-.song-card .download-links {
-  padding: 15px;
-  background-color: #f9f9f9;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-}
-
-.song-card .download-links a {
-  background-color: #007bff;
-  color: #fff;
-  padding: 8px 12px;
-  text-decoration: none;
-  border-radius: 4px;
-  font-size: 0.9em;
-  transition: background-color 0.3s ease;
-}
-
-.song-card .download-links a:hover {
-  background-color: #0056b3;
-}
-#suggestionsList h2 {
+.hideandseek {
   text-align: center;
 }
-#aiList {
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 25px;
+  background-color: var(--primary-color);
+  color: var(--text-light);
+  transition: background-color 0.2s ease, transform 0.1s ease,
+    box-shadow 0.2s ease; /* Added box-shadow transition */
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: center; /* Ensure text is centered */
+}
+button:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-2px); /* Slightly more lift */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow on hover */
+}
+button:active {
+  transform: scale(0.98) translateY(0);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+#wait,
+#instraction {
+  text-align: center;
+}
+input[type="text"] {
+  font-family: inherit;
+  padding: 0 20px; /* Padding left/right */
+  border: 1px solid var(--border-color);
+  border-radius: 25px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  height: 42px; /* Consistent height */
+  line-height: 42px; /* Align text vertically */
+  width: 100%; /* Let flexbox control size */
+  max-width: 450px;
+}
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 3px rgba(0, 159, 253, 0.2);
+}
+
+a {
+  color: var(--secondary-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  font-weight: 500;
+}
+a:hover {
+  color: var(--primary-color);
+  text-decoration: underline;
+}
+
+/* === Fixed Elements Positioning === */
+
+#Active {
+  position: fixed;
+  top: 12px; /* Align vertically within search bar space */
+  right: 20px;
+  background-color: #00000080;
+  padding: 6px 12px;
+  border-radius: 15px;
+  color: var(--card-background); /* Use card background for text */
+  font-weight: 500;
+  font-size: 0.8rem;
+  box-shadow: var(--shadow-md);
+  z-index: 1010;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+#Active span {
+  font-weight: 700;
+}
+
+.search-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  background: var(--card-background);
+  padding: 0 20px; /* Use padding for spacing, not height directly */
+  height: var(--search-height);
+  box-shadow: var(--shadow-sm);
+  border-bottom: 1px solid var(--border-color);
+}
+/* Adjust search button */
+.search-container button {
+  height: 42px;
+  flex-shrink: 0; /* Prevent button shrinking */
+}
+
+header {
+  z-index: 1005;
+}
+
+.nav-bar {
+  position: fixed;
+  top: calc(var(--search-height) + 15px); /* Position below search */
+  left: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 15px 10px;
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  list-style-type: none;
+  width: var(--nav-width-desktop); /* Set fixed width for desktop */
+}
+.nav-bar li.image {
+  border-radius: 50%; /* Default round */
+  transition: background-color 0.2s ease;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
+  width: 40px;
+  height: 40px;
+  padding: 0; /* Remove padding if using fixed size */
 }
-.song {
+.nav-bar li.image:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+.nav-bar li.image img {
+  height: 20px;
+  width: 20px;
+}
+
+/* Style #ai specifically */
+#ai {
+  border-radius: var(--border-radius); /* Use standard radius */
+  background-color: var(--primary-color);
+}
+#ai img {
+  filter: brightness(0) invert(1);
+  transform: none !important; /* Remove inline scale */
+}
+#ai:hover {
+  background-color: var(--secondary-color);
+}
+/* Remove transform from #search */
+#search img {
+  transform: none !important;
+}
+
+.player-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: var(--player-height);
+  background-color: var(--card-background);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08); /* Softer shadow */
+  z-index: 1000;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  gap: 15px;
+}
+
+/* === Loading/Error === */
+#loading,
+#error-message {
+  /* Styles remain similar */
+}
+
+/* === Song Lists and Cards === */
+
+#song-list,
+#suggestionsList > ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 25px;
+  list-style-type: none;
+  padding: 0; /* Remove default UL padding */
+}
+#favoritesList {
+  display: flex;
+  gap: 25px;
+  list-style-type: none;
+  padding: 0;
+  /* Prevent wrapping to ensure items stay in a single line */
+  flex-wrap: wrap;
+}
+
+#favoritesList li {
+  /* Distribute space equally among items */
+  flex: 1;
+  /* Optional: Set a minimum width to prevent items from becoming too narrow */
+  min-width: calc((100% - 75px) / 4); /* 75px = 3 gaps (25px * 3) */
+}
+
+/* Card Styling */
+#song-list li,
+#favoritesList li,
+#suggestionsList > ul > li {
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-color);
+  align-items: center;
+  max-width: fit-content;
+}
+#song-list li:hover,
+#favoritesList li:hover,
+#suggestionsList > ul > li:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Card Image */
+#song-list li > img,
+#favoritesList li > img,
+#suggestionsList > ul > li > img {
+  width: 100%;
+  aspect-ratio: 1 / 1; /* Square aspect ratio - safer default */
+  object-fit: cover;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Card Details Container (Assuming details are wrapped in a div) */
+/* ** IF DETAILS ARE NOT WRAPPED, apply padding/margin to the <p> tags directly ** */
+#song-list li .details, /* Example: Use a class if available */
+#favoritesList li .details,
+#suggestionsList > ul > li .details {
+  max-width: 300px;
+  padding: 15px 15px 5px 15px; /* Padding around details */
+  flex-grow: 1; /* Allow details to push actions down */
+}
+/* Styling for paragraphs within the details */
+#song-list li .details p,
+#favoritesList li .details p,
+#suggestionsList > ul > li .details p,
+/* --- OR if <p> are direct children of <li> --- */
+#song-list li > p,
+#favoritesList li > p,
+#suggestionsList > ul > li > p {
+  font-size: 0.88rem; /* Slightly larger detail text */
+  color: var(--text-secondary);
+  line-height: 1.5; /* Increased line height */
+  margin-bottom: 6px; /* More space between lines */
+  padding-left: 5px; /* Indent details slightly */
+}
+/* Bold label styling (Requires HTML change: <p><strong>Artist:</strong> Neha Kakkar</p>) */
+#song-list li p strong,
+#favoritesList li p strong,
+#suggestionsList > ul > li p strong {
+  font-weight: 700;
+  color: var(--text-color);
+  margin-right: 5px;
+}
+
+/* Card Actions Container (RECOMMENDED: Wrap actions in a div) */
+#song-list li .actions, /* Example: Use a class if available */
+#favoritesList li .actions,
+#suggestionsList > ul > li .actions {
+  padding: 10px 15px 15px 15px; /* Padding around actions */
+  border-top: 1px solid var(--border-color); /* Separator line */
+  background-color: #fdfdfd; /* Slightly off-white background */
+  margin-top: auto; /* Push actions to bottom if details space allows */
+}
+/* --- OR if actions <a>/<button> are direct children of <li> --- */
+/* Styling for download link */
+#song-list li > a,
+#favoritesList li > a,
+#suggestionsList > ul > li > a {
+  display: block; /* Make link take full width */
   text-align: center;
+  margin: 15px 15px 10px 15px; /* Top/Bottom/Side margin */
+  font-weight: 500;
+}
+/* Styling for favourite button */
+#song-list li > button,
+#favoritesList li > button,
+#suggestionsList > ul > li > button {
+  display: block; /* Make button take full width */
+  width: calc(100% - 30px); /* Full width minus side margins */
+  margin: 0 auto 15px auto; /* Center horizontally, bottom margin */
+}
+/* Example styling for the last card button */
+#song-list li:last-child > button {
+  background-color: var(--secondary-color);
+}
+#song-list li:last-child > button:hover {
+  background-color: var(--primary-color);
+}
+
+/* Smart Server Health */
+#smart-Server-health {
+  text-align: center;
+}
+
+/* === Player Elements Styling === */
+
+#song-image {
+  width: 50px;
+  height: 50px; /* Adjusted size */
+  border-radius: var(--border-radius);
+  object-fit: cover;
+  border: none;
+  margin: 0;
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+
+.controls {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  padding: 5px 0;
+}
+
+#progress-bar {
+  width: 100%;
+  height: 5px; /* Thinner bar */
+  background-color: #eef1f7;
+  border-radius: 3px;
+  position: absolute;
+  top: 2px;
+  left: 0;
+  cursor: pointer;
+  overflow: hidden;
+}
+#progress-thumb {
+  width: 0%;
+  height: 100%;
+  background-color: var(--primary-color);
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: width 0.1s linear, background-color 0.2s ease; /* Added color transition */
+  border-radius: 0 3px 3px 0;
+  /* Simple thumb, no extra dot */
+}
+#progress-bar:hover #progress-thumb {
+  background-color: var(--secondary-color);
+}
+
+#song-title {
+  width: 100%;
+  text-align: center;
+  color: var(--text-color);
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+  /* overflow: hidden;
+  text-overflow: ellipsis; */
+  margin-top: 6px; /* Space below progress */
+  margin-bottom: 4px; /* Space above buttons */
+  position: static;
+}
+
+#paly-prev-next-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+#paly-prev-next-btn button {
+  background: none;
+  border: none;
+  color: var(--text-secondary); /* Grey icons */
+  font-size: 1.6rem; /* Adjusted size */
+  padding: 0;
+  line-height: 1;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px; /* Consistent size */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+#paly-prev-next-btn button:hover {
+  color: var(--primary-color);
+}
+#play-btn {
+  font-size: 2rem; /* Adjusted size */
+  color: var(--primary-color); /* Keep play/pause prominent */
+}
+#play-btn:hover {
+  color: var(--secondary-color);
+}
+
+#volume-slider {
+  width: 90px;
+  height: 4px; /* Thinner volume */
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background: #eef1f7;
+  border-radius: 3px;
+  outline: none;
+  margin: 0;
+  flex-shrink: 0;
+}
+#volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px; /* Smaller thumb */
+  background: var(--primary-color);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+#volume-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+#volume-slider:hover::-webkit-slider-thumb {
+  background: var(--secondary-color);
+}
+#volume-slider:hover::-moz-range-thumb {
+  background: var(--secondary-color);
+}
+
+/* === Footer === */
+footer {
+  /* Styles remain similar */
+}
+.footer-content {
+  text-align: center;
+}
+
+/* === Responsiveness === */
+
+/* Desktop and larger tablets */
+@media (min-width: 768px) {
+  body {
+    padding-left: calc(var(--nav-width-desktop) + var(--nav-gap-desktop));
+  }
+  .search-container {
+    padding-left: calc(
+      var(--nav-width-desktop) + var(--nav-gap-desktop) + 20px
+    ); /* Ensure search content clears nav */
+    justify-content: flex-start;
+  }
+  .nav-bar {
+    /* Keep fixed left, ensure height doesn't cause issues */
+    max-height: calc(
+      100vh - var(--search-height) - var(--player-height) - 40px
+    ); /* Add buffer */
+    overflow-y: auto; /* Allow scrolling if too many items */
+  }
+  /* Ensure main content sections have the correct left margin */
+  main,
+  .song-list,
+  .favorites-list,
+  #suggestionsList {
+    margin-left: 0; /* Reset any mobile margin if needed */
+    padding-left: 25px; /* Maintain padding */
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(100);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+#song-title {
+  animation: marquee 25s linear infinite;
+  font-size: 1rem;
+}
+/* Mobile Devices */
+@media (max-width: 767px) {
+  :root {
+    --search-height: 60px;
+    --player-height: 75px;
+    --nav-width-mobile: 50px; /* Define nav width for mobile */
+    --nav-gap-mobile: 10px; /* Space next to mobile nav */
+  }
+  body {
+    padding-left: calc(
+      var(--nav-width-mobile) + var(--nav-gap-mobile)
+    ); /* ADD PADDING for mobile nav */
+  }
+
+  #Active {
+    top: 76%;
+    right: 2px;
+    font-size: 0.75rem;
+    padding: 4px 8px;
+  }
+
+  .search-container {
+    height: var(--search-height);
+    padding: 0 10px;
+    gap: 10px;
+    /* Adjust search padding to clear mobile nav */
+    padding-left: calc(var(--nav-width-mobile) + var(--nav-gap-mobile) + 10px);
+  }
+  #song {
+    height: 40px;
+    font-size: 0.9rem;
+    padding: 0 15px;
+  }
+  .search-container button {
+    height: 40px;
+    padding: 8px 15px;
+    font-size: 0.85rem;
+  }
+
+  .nav-bar {
+    top: calc(var(--search-height) + 10px);
+    left: 10px; /* Adjust left position */
+    gap: 15px;
+    padding: 12px 8px;
+    width: var(--nav-width-mobile); /* Use mobile width */
+  }
+  .nav-bar li.image {
+    width: 36px;
+    height: 36px;
+  }
+  .nav-bar li.image img {
+    height: 18px;
+    width: 18px;
+  }
+
+  /* Content sections */
+  main,
+  .song-list,
+  .favorites-list,
+  #suggestionsList {
+    padding: 20px 15px; /* Adjust padding */
+    margin-left: 0; /* Ensure no desktop margin */
+  }
+
+  #song-list,
+  #favoritesList,
+  #suggestionsList > ul {
+    /* Critical: Adjust minmax for mobile */
+    display: grid;
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(200px, 1fr)
+    ); /* Smaller minimum */
+    gap: 15px;
+  }
+  /* Card detail text size */
+  #song-list li .details p,
+  #favoritesList li .details p,
+  #suggestionsList > ul > li .details p,
+  #song-list li > p,
+  #favoritesList li > p,
+  #suggestionsList > ul > li > p {
+    font-size: 0.82rem;
+    line-height: 1.4;
+    margin-bottom: 4px;
+  }
+  /* Card button */
+  #song-list li > button,
+  #favoritesList li > button,
+  #suggestionsList > ul > li > button {
+    width: calc(100% - 20px);
+    margin: 0 auto 10px auto;
+    padding: 8px 15px;
+    font-size: 0.85rem;
+  }
+
+  .player-container {
+    height: var(--player-height);
+    padding: 0 10px;
+    gap: 10px;
+  }
+  #song-image {
+    width: 45px;
+    height: 45px;
+  }
+  .controls {
+    padding: 4px 0;
+  }
+  #progress-bar {
+    height: 4px;
+  } /* Thinner */
+  #song-title {
+    font-size: 0.9rem;
+    margin-top: 5px;
+    margin-bottom: 3px;
+  }
+  #paly-prev-next-btn {
+    gap: 10px;
+  }
+  #paly-prev-next-btn button {
+    font-size: 1.5rem;
+    width: 34px;
+    height: 34px;
+  }
+  #play-btn {
+    font-size: 1.8rem;
+  }
+  #volume-slider {
+    width: 70px;
+    height: 3px;
+  } /* Thinner */
+  #volume-slider::-webkit-slider-thumb {
+    width: 10px;
+    height: 10px;
+  }
+  #volume-slider::-moz-range-thumb {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+/* Very Small Mobile */
+@media (max-width: 480px) {
+  :root {
+    --nav-width-mobile: 45px; /* Even narrower nav */
+    --nav-gap-mobile: 8px;
+  }
+  body {
+    /* Re-adjust padding for very small screens */
+    padding-left: calc(var(--nav-width-mobile) + var(--nav-gap-mobile));
+    /* Adjust top padding if search stacks */
+  }
+
+  #song-list,
+  #favoritesList,
+  #suggestionsList > ul {
+    /* Single column guaranteed */
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .search-container {
+    /* Keep search at top, but adjust padding */
+    padding-left: calc(var(--nav-width-mobile) + var(--nav-gap-mobile) + 10px);
+  }
+  #song {
+    font-size: 0.85rem;
+  } /* Smaller text */
+
+  .nav-bar {
+    width: var(--nav-width-mobile);
+    left: 8px; /* Adjust position */
+    padding: 10px 5px;
+    gap: 12px;
+  }
+  .nav-bar li.image {
+    width: 32px;
+    height: 32px;
+  }
+  .nav-bar li.image img {
+    height: 16px;
+    width: 16px;
+  }
+
+  /* Player adjustments */
+  .player-container {
+    gap: 8px;
+    padding: 0 8px;
+  }
+  #song-image {
+    width: 40px;
+    height: 40px;
+  }
+  /* Hide volume slider */
+  #volume-slider {
+    display: none;
+  }
+  #paly-prev-next-btn button {
+    font-size: 1.4rem;
+    width: 30px;
+    height: 30px;
+  }
+  #play-btn {
+    font-size: 1.6rem;
+  }
+  #song-title {
+    font-size: 0.8rem;
+  }
+
+  /* Adjust main content padding */
+  main,
+  .song-list,
+  .favorites-list,
+  #suggestionsList {
+    padding: 15px 10px;
+  }
 }

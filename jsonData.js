@@ -14,7 +14,7 @@ async function fetchDataAndDisplay() {
   }, 10);
   try {
     const response = await fetch(
-      `https://musiclover-nu.vercel.app/api/search/songs?query=${song}`
+      `https://saavn.dev/api/search/songs?query=${song}`
     );
 
     if (!response.ok) {
@@ -22,7 +22,6 @@ async function fetchDataAndDisplay() {
       throw new Error(
         `HTTP error! status: ${response.status}, details: ${errorText}`
       );
-      smartServerhealth.innerHTML = "Normal Search Failed";
     } else {
       smartServerhealth.innerHTML = "Normal Search Completed";
     }

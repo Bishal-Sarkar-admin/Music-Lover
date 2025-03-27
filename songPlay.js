@@ -35,7 +35,7 @@ function loadSong(index) {
   const song = songs[index];
 
   // Update song image with a fallback.
-  songImage.src = song.image || "default-image.jpg";
+  songImage.src = song.image || "music.png";
 
   // Update song title and details.
   songTitle.innerHTML = `<span class="song-title-text">${song.title} - ${song.artist} - ${song.album} - ${song.language} - ${song.year}</span>`;
@@ -121,10 +121,10 @@ function playPause() {
     audioPlayer
       .play()
       .catch((error) => console.error("Playback error:", error));
-    playBtn.textContent = userAgent() ? "⏸️" : "⏸️ Pause";
+    playBtn.textContent = userAgent() ? "⏸️" : "⏸️";
   } else {
     audioPlayer.pause();
-    playBtn.textContent = userAgent() ? "▶️" : "▶️ Play";
+    playBtn.textContent = userAgent() ? "▶️" : "▶️";
   }
 }
 
@@ -183,9 +183,9 @@ function userAgent() {
  * Initializes button labels based on the device type.
  */
 function initializeButtonLabels() {
-  playBtn.textContent = userAgent() ? "▶️" : "▶️ Play";
-  prevBtn.textContent = userAgent() ? "⏮️" : "⏮️ Previous";
-  nextBtn.textContent = userAgent() ? "⏭️" : "Next ⏭️";
+  playBtn.textContent = userAgent() ? "▶️" : "▶️";
+  prevBtn.textContent = userAgent() ? "⏮️" : "⏮️";
+  nextBtn.textContent = userAgent() ? "⏭️" : "⏭️";
 }
 
 /**
@@ -232,28 +232,31 @@ function loadSongsFromLocalStorage() {
       if (Array.isArray(parsedSongs) && parsedSongs.length > 0) {
         songs = parsedSongs;
         createSongCards(songs);
-        loadSong(currentSongIndex);
+        // loadSong(currentSongIndex);
       } else {
         throw new Error("No valid songs found.");
       }
-    } else {
-      const data = {
-        id: 1,
-        title: "Badshah O Badshah",
-        artist: "Anu Malik",
-        album: "Baadshah",
-        image: "Badshah O Badshah.jpg",
-        year: "1999",
-        language: "hindi",
-        playCount: "12924854",
-        url: {
-          "320kbps": "Baadshah O Baadshah.m4a",
-        }, // Populate URLS if needed
-      };
-      songs.push(data);
-      createSongCards(songs);
-      loadSong(currentSongIndex);
     }
+    //
+    // else {
+    //   const data = {
+    //     id: "1M",
+    //     title: "Badshah O Badshah",
+    //     artist: "Anu Malik",
+    //     album: "Baadshah",
+    //     image: "Badshah O Badshah.jpg",
+    //     year: "1999",
+    //     language: "hindi",
+    //     playCount: "12924854",
+    //     url: {
+    //       "320kbps": "Baadshah O Baadshah.m4a",
+    //     }, // Populate URLS if needed
+    //   };
+
+    //   songs.push(data);
+    //   createSongCards(songs);
+    //   loadSong(currentSongIndex);
+    // }
   } catch (error) {
     console.error("Error loading songs from localStorage:", error);
     // songTitle.textContent = "Error loading songs.";
@@ -438,7 +441,13 @@ favoritesList.addEventListener("click", (event) => {
     audioPlayer.src = selectedURL;
     audioPlayer
       .play()
-      .catch((error) => console.error("Playback error:", error));
+      .then(() => {
+        playBtn.textContent = "⏸️";
+      })
+      .catch((error) => {
+        console.error("Playback error:", error);
+        playBtn.textContent = "▶️";
+      });
   }
 });
 

@@ -2,12 +2,17 @@ const menu = document.querySelector("#menu");
 const favorite = document.querySelector("#favourite");
 const home = document.querySelector("#Home");
 const ai = document.querySelector("#ai");
-
+const search = document.querySelector("#search");
+const hideandseek = document.querySelector(".hideandseek");
+const instraction = document.querySelector("#instraction");
+// const favoritesList = document.querySelector("#favoritesList");
 // Initially hide the elements.
+
 favorite.style.display = "none";
 home.style.display = "none";
 ai.style.display = "none";
-
+hideandseek.style.display = "none";
+// favoritesList.style.display = "none";
 // Toggle the display on menu click.
 menu.addEventListener("click", () => {
   if (
@@ -24,6 +29,65 @@ menu.addEventListener("click", () => {
     ai.style.display = "none";
   }
 });
+home.addEventListener("click", () => {
+  instraction.innerHTML = "Wellcome To Home page";
+  setTimeout(() => {
+    instraction.innerHTML = "";
+  }, 2000);
+
+  hideandseek.style.display = "none";
+});
+favorite.addEventListener("click", () => {
+  const SongsforAI = JSON.parse(localStorage.getItem("favoriteSongs")) || [];
+  if (SongsforAI.length === 0) {
+    instraction.innerHTML = "No Favorite Songs Found";
+    setTimeout(() => {
+      instraction.innerHTML = "";
+    }, 2000);
+  } else {
+    instraction.innerHTML = "Wellcome To Favorite Songs page";
+    setTimeout(() => {
+      instraction.innerHTML = "";
+    }, 2000);
+  }
+});
+ai.addEventListener("click", () => {
+  let SongsforAI = [];
+  try {
+    SongsforAI = JSON.parse(localStorage.getItem("favoriteSongs")) || [];
+  } catch (error) {
+    console.error("Error parsing favorite songs:", error);
+    SongsforAI = [];
+  }
+
+  if (SongsforAI.length === 0) {
+    favoritesList.style.display = "none";
+    hideandseek.style.display = "none";
+    instraction.innerHTML =
+      "No Favorite Songs Found. At First, Add Songs to Your Favorite List";
+
+    setTimeout(() => {
+      instraction.innerHTML = "";
+    }, 4000);
+  } else {
+    instraction.innerHTML = "Welcome to Your AI Song Recommendation Page";
+    if (typeof displayAI === "function") {
+      displayAI();
+    } else {
+      console.warn("displayAI function is not defined");
+    }
+  }
+});
+
+search.addEventListener("click", () => {
+  const SongsforAI = JSON.parse(localStorage.getItem("favoriteSongs")) || [];
+  if (SongsforAI.length === 0) {
+    hideandseek.style.display = "none";
+  } else {
+    hideandseek.style.display = "block";
+  }
+});
+
 function songArrayforAI() {
   const SongsforAI = JSON.parse(localStorage.getItem("favoriteSongs")) || [];
   const filteredSongs = SongsforAI.map((element) => ({
@@ -63,17 +127,18 @@ async function displayAI() {
   const ai = document.querySelector("#suggestionsList");
 
   // Create and show the loading message
-  let wait = document.createElement("div");
-  wait.setAttribute("id", "wait");
-  wait.innerText = "Wait a moment, AI is generating a songs list for you...";
-  ai.appendChild(wait); // Add loading message to the page
+  instraction.innerText =
+    "Wait a moment, AI is generating a songs list for you...";
+  setTimeout(() => {
+    instraction.innerHTML = "";
+  }, 8000);
 
   // Fetch AI-generated song list
   const suggestions = await fetchAI();
 
   // Remove the loading message after receiving the data
-  if (suggestions) {
-    wait.remove(); // Correct way to delete an element
+  if (!suggestions) {
+    instraction.innerText = "No, AI generated songs are not Found";
   }
 
   // Check if #aiList exists, otherwise create it
